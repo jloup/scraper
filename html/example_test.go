@@ -10,7 +10,7 @@ import (
 	"github.com/jloup/scraper/node"
 )
 
-func ExampleScraper() {
+func ExampleScrapHTML() {
 	// we avoid checking error for reading ease
 	soundcloud, _ := html.JSONFileToHtmlScraper("testdata/exampledata/soundcloud.json")
 	html.AddScraperConfig("soundcloud", soundcloud)

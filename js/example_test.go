@@ -7,7 +7,7 @@ import (
 	"github.com/jloup/scraper/js"
 )
 
-func ExampleScrap() {
+func ExampleScrapJS() {
 	const jscode = `
 	(function() {
 
