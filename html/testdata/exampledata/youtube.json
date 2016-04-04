@@ -1,0 +1,37 @@
+{"config": [
+  { "tag": "iframe",
+    "validators": [
+              {"name": "exists", "attr": "src"},
+              {"name": "ytIFast"},
+              {"name": "ytI"}
+             ],
+    "extractors": [
+               {"name": "yt", "attr": "src"}
+             ]
+  },
+  {
+    "tag": "object",
+    "childs": [
+               {
+                "tag": "embed",
+                "validators": [
+                          {"name": "ytOFast", "attr": "src"},
+                          {"name": "ytO", "attr": "src"}
+                         ],
+                "extractors": [
+                           {"name": "yt", "attr": "src"}
+                         ]
+               },
+               {
+                "tag": "param",
+                "validators": [
+                          {"name": "ytOFast", "attr": "value"},
+                          {"name": "ytO", "attr": "value"}
+                         ],
+                "extractors": [
+                          {"name": "yt", "attr": "value"}
+                        ]
+              }
+             ]
+  }
+]}

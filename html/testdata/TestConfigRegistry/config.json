@@ -1,0 +1,19 @@
+{"config": [
+           {
+             "extern": "link"
+           },
+           {
+            "tag": "text",
+            "extractors": [
+                           {"name": "extractText", "key": "text"}
+                          ],
+            "childs": [{
+                         "extern": "link"
+          						},
+          						{
+                         "extern": "link"
+          						}]
+
+           }
+           ]
+}

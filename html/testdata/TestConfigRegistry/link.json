@@ -1,0 +1,9 @@
+{"config": [{
+   "tag": "a",
+   "validators": [
+                 {"name": "exists", "attr": "href"}
+                 ],
+   "extractors": [
+                  {"name": "extractAttr", "attr": "href"}
+                 ]
+}]}

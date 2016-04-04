@@ -1,0 +1,40 @@
+{"config": [{
+   "tag": "div",
+   "validators": [
+             {"name": "exits", "attr": "id"},
+             {"name": "attrEquals", "attr": "id", "value": "main"}
+            ],
+   "extractors": [
+             {"name": "extractAttr", "attr": "id"}
+            ],
+   "childs": [
+             {
+		         	"tag": "span",
+		         	"validators": [
+		         	              {"name": "exists", "attr": "data-player-type"},
+		         	              {"name": "attrEquals", "attr": "data-player-type", "value": "sc"}
+		         	              ],
+              "extractors": [
+                            {"name": "setType", "type": "SONG"}
+                            ],
+              "childs": [
+                         {
+                          "tag": "a",
+                          "validators": [
+                                        {"name": "exists", "attr": "href"}
+                                        ],
+                          "extractors": [
+                                        {"name": "extractAttr", "attr": "href"}
+                                        ]
+                         }
+                        ]
+            },
+            {
+              "tag": "text",
+              "extractors": [
+                             {"name": "extractText", "key": "text"}
+                            ]
+
+            }
+          ]
+}]}

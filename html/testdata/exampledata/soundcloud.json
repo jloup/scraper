@@ -1,0 +1,27 @@
+{"config": [
+  { "tag": "iframe",
+    "validators": [
+              {"name": "exists", "attr": "src"},
+              {"name": "scIFast"},
+              {"name": "scI"}
+             ],
+    "extractors": [
+               {"name": "sc", "attr": "src"}
+             ]
+  },
+  {
+    "tag": "object",
+    "childs": [
+               {
+                "tag": "param",
+                "validators": [
+                          {"name": "scOFast"},
+                          {"name": "scO"}
+                         ],
+                "extractors": [
+                           {"name": "sc", "attr": "value"}
+                         ]
+               }
+             ]
+  }
+]}

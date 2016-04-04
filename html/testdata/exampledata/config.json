@@ -1,0 +1,8 @@
+{"config": [
+  {
+	  "extern": "soundcloud"
+  },
+  { 
+	  "extern": "youtube"
+  }
+]}
