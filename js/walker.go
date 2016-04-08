@@ -213,6 +213,11 @@ func (j *jsWalker) walkAst(n ast.Node, depth int) int {
 			j.walkAst(arg, d+1)
 		}
 
+	case *ast.WhileStatement:
+		j.walkerCallback(nodedata.NodeData{nodedata.WhileStatement, "", ""}, depth)
+		j.walkAst(nn.Test, depth)
+		j.walkAst(nn.Body, depth+1)
+
 	case *ast.EmptyExpression:
 	case *ast.EmptyStatement:
 	case nil:
@@ -236,8 +241,6 @@ func (j *jsWalker) walkAst(n ast.Node, depth int) int {
 		j.err = fmt.Errorf("ForInStatement not handled")
 	case *ast.LabelledStatement:
 		j.err = fmt.Errorf("LabelledStatement not handled")
-	case *ast.WhileStatement:
-		j.err = fmt.Errorf("WhileStatement not handled")
 	case *ast.WithStatement:
 		j.err = fmt.Errorf("WithStatement not handled")
 	case *ast.SwitchStatement:
