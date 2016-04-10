@@ -35,6 +35,7 @@ var extractorRegistry = map[string]ExtractorGenerator{
 	"setType":              extractor.NewSetType,
 	"setKV":                extractor.NewSetKV,
 	"sc":                   extractor.NewSoundcloudR,
+	"scStreamUrl":          extractor.NewSoundcloudStreamUrl,
 	"yt":                   extractor.NewYoutubeId,
 	"js":                   extractor.NewJs,
 }

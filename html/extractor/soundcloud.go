@@ -15,11 +15,6 @@ const (
 	soundcloudUrlRegex = `(?P<url>https?:\/\/(?:www.)?(?:api\.)?soundcloud.com\/.+)`
 )
 
-// extract soundcloud song type and id from a soundcloud URL located in an attribute
-type SoundcloudR struct {
-	Attr []byte
-}
-
 func tryRegex(rgx, s string, agg aggregator.Aggregator) bool {
 	r := regexp.MustCompile(rgx)
 	match := r.FindStringSubmatch(s)
@@ -33,6 +28,11 @@ func tryRegex(rgx, s string, agg aggregator.Aggregator) bool {
 	}
 
 	return true
+}
+
+// extract soundcloud song type and id from a soundcloud URL located in an attribute
+type SoundcloudR struct {
+	Attr []byte
 }
 
 func (s SoundcloudR) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
@@ -112,6 +112,57 @@ func NewSoundcloudR(config map[string]string) (Extractor, error) {
 		return SoundcloudR{Attr: []byte(config["attr"])}, nil
 	} else {
 		return SoundcloudRA{Attr: a}, nil
+	}
+
+}
+
+type SoundcloudStreamUrl struct {
+	Attr []byte
+}
+
+func (s SoundcloudStreamUrl) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
+	uri, err := url.Parse(string(node.Get(s.Attr)))
+	if err != nil {
+		return err
+	}
+
+	tryRegex(soundcloudRegex, string(node.Get(s.Attr)), agg)
+
+	if r, ok := uri.Query()["secret_token"]; ok {
+		agg.Aggregate("secretToken", r[0])
+	}
+
+	return nil
+}
+
+type SoundcloudStreamUrlA struct {
+	Attr atom.Atom
+}
+
+func (s SoundcloudStreamUrlA) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
+	uri, err := url.Parse(string(node.GetAtom(s.Attr)))
+	if err != nil {
+		return err
+	}
+
+	tryRegex(soundcloudRegex, string(node.GetAtom(s.Attr)), agg)
+
+	if r, ok := uri.Query()["secret_token"]; ok {
+		agg.Aggregate("secretToken", r[0])
+	}
+
+	return nil
+}
+
+func NewSoundcloudStreamUrl(config map[string]string) (Extractor, error) {
+	if config["attr"] == "" {
+		return nil, ExtractorInitError{What: "Missing attr key in config"}
+	}
+
+	if a := atom.Lookup([]byte(config["attr"])); a == 0 {
+		return SoundcloudStreamUrl{Attr: []byte(config["attr"])}, nil
+	} else {
+		return SoundcloudStreamUrlA{Attr: a}, nil
 	}
 
 }
