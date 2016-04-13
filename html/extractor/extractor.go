@@ -25,21 +25,31 @@ func (e ExtractorInitError) Error() string {
 
 // extract a specified attribute from a HTML tag
 type Attribute struct {
-	Attr []byte
+	Rename string
+	Attr   []byte
 }
 
 func (a Attribute) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
-	agg.Aggregate(string(a.Attr), string(node.Get(a.Attr)))
+	if a.Rename != "" {
+		agg.Aggregate(a.Rename, string(node.Get(a.Attr)))
+	} else {
+		agg.Aggregate(string(a.Attr), string(node.Get(a.Attr)))
+	}
 
 	return nil
 }
 
 type AttributeA struct {
-	Attr atom.Atom
+	Rename string
+	Attr   atom.Atom
 }
 
 func (a AttributeA) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
-	agg.Aggregate(a.Attr.String(), string(node.GetAtom(a.Attr)))
+	if a.Rename != "" {
+		agg.Aggregate(a.Rename, string(node.GetAtom(a.Attr)))
+	} else {
+		agg.Aggregate(a.Attr.String(), string(node.GetAtom(a.Attr)))
+	}
 
 	return nil
 }
@@ -50,9 +60,9 @@ func NewAttribute(config map[string]string) (Extractor, error) {
 	}
 
 	if a := atom.Lookup([]byte(config["attr"])); a == 0 {
-		return Attribute{Attr: []byte(config["attr"])}, nil
+		return Attribute{Attr: []byte(config["attr"]), Rename: config["rename"]}, nil
 	} else {
-		return AttributeA{Attr: a}, nil
+		return AttributeA{Attr: a, Rename: config["rename"]}, nil
 	}
 }
 
