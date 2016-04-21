@@ -28,6 +28,8 @@ var validatorRegistry = map[string]ValidatorGenerator{
 	"scOFast":                 validator.NewSCObjectFast,
 	"facebookVideoIframeFast": validator.NewFacebookVideoIframeFast,
 	"facebookVideoIframe":     validator.NewFacebookVideoIframe,
+	"dailymotionIframeFast":   validator.NewDailymotionIframeFast,
+	"dailymotionIframe":       validator.NewDailymotionIframe,
 }
 
 var extractorRegistry = map[string]ExtractorGenerator{
@@ -41,6 +43,7 @@ var extractorRegistry = map[string]ExtractorGenerator{
 	"yt":                   extractor.NewYoutubeId,
 	"js":                   extractor.NewJs,
 	"facebookVideo":        extractor.NewFacebookVideo,
+	"dailymotionVideo":     extractor.NewDailymotionVideo,
 }
 
 var scraperRegistry = map[string][]*node.ScraperNode{}

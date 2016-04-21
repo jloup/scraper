@@ -19,16 +19,14 @@ func (s YoutubeId) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) e
 
 	r := regexp.MustCompile(`(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:v|embed)\/(?P<id>[\w\-]{11})(?:\?[^\'|"]*)?`)
 
-	match := r.FindStringSubmatch(string(uri))
+	match := r.FindSubmatch(uri)
 	if len(match) == 0 {
 		return fmt.Errorf("no youtube item found in '%s'", string(uri))
 	}
 
-	resu := make(map[string]string)
 	for i, key := range r.SubexpNames()[1:] {
 		i += 1
-		resu[key] = match[i]
-		agg.Aggregate(key, match[i])
+		agg.Aggregate(key, string(match[i]))
 	}
 
 	return nil
@@ -43,16 +41,14 @@ func (s YoutubeIdA) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) 
 
 	r := regexp.MustCompile(`(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:v|embed)\/(?P<id>[\w\-]{11})(?:\?[^\'|"]*)?`)
 
-	match := r.FindStringSubmatch(string(uri))
+	match := r.FindSubmatch(uri)
 	if len(match) == 0 {
 		return fmt.Errorf("no youtube item found in '%s'", string(uri))
 	}
 
-	resu := make(map[string]string)
 	for i, key := range r.SubexpNames()[1:] {
 		i += 1
-		resu[key] = match[i]
-		agg.Aggregate(key, match[i])
+		agg.Aggregate(key, string(match[i]))
 	}
 
 	return nil
