@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-const facebookVideoHrefRegex = `^https?:\/\/(?:www.)?facebook.com\/(?P<entity>[^\/]+)\/videos\/(?P<id>[0-9]+)`
+const facebookVideoHrefRegex = `^https?:\/\/(?:www.)?facebook.com\/(?P<entity>[^\/]+)\/videos(?:\/vb\.[0-9]+)?\/(?P<id>[0-9]+)`
 
 // extract facebook iframe video id
 type FacebookVideo struct {
