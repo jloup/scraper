@@ -15,17 +15,19 @@ type ValidatorGenerator func(config map[string]string) (validator.Validator, err
 type ExtractorGenerator func(config map[string]string) (extractor.Extractor, error)
 
 var validatorRegistry = map[string]ValidatorGenerator{
-	"exists":       validator.NewExists,
-	"attrEquals":   validator.NewAttrEquals,
-	"attrContains": validator.NewAttrContains,
-	"ytI":          validator.NewYTIframe,
-	"ytO":          validator.NewYTObject,
-	"scI":          validator.NewSCIframe,
-	"scO":          validator.NewSCObject,
-	"ytIFast":      validator.NewYTIframeFast,
-	"ytOFast":      validator.NewYTObjectFast,
-	"scIFast":      validator.NewSCIframeFast,
-	"scOFast":      validator.NewSCObjectFast,
+	"exists":                  validator.NewExists,
+	"attrEquals":              validator.NewAttrEquals,
+	"attrContains":            validator.NewAttrContains,
+	"ytI":                     validator.NewYTIframe,
+	"ytO":                     validator.NewYTObject,
+	"scI":                     validator.NewSCIframe,
+	"scO":                     validator.NewSCObject,
+	"ytIFast":                 validator.NewYTIframeFast,
+	"ytOFast":                 validator.NewYTObjectFast,
+	"scIFast":                 validator.NewSCIframeFast,
+	"scOFast":                 validator.NewSCObjectFast,
+	"facebookVideoIframeFast": validator.NewFacebookVideoIframeFast,
+	"facebookVideoIframe":     validator.NewFacebookVideoIframe,
 }
 
 var extractorRegistry = map[string]ExtractorGenerator{
@@ -38,6 +40,7 @@ var extractorRegistry = map[string]ExtractorGenerator{
 	"scStreamUrl":          extractor.NewSoundcloudStreamUrl,
 	"yt":                   extractor.NewYoutubeId,
 	"js":                   extractor.NewJs,
+	"facebookVideo":        extractor.NewFacebookVideo,
 }
 
 var scraperRegistry = map[string][]*node.ScraperNode{}
