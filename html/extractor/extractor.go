@@ -142,3 +142,45 @@ func NewSetType(config map[string]string) (Extractor, error) {
 	config["value"] = config["type"]
 	return NewSetKV(config)
 }
+
+// extract a specified attribute from a HTML tag with a Regexp expression
+type Regexp struct {
+	R        string
+	Attr     []byte
+	AtomAttr atom.Atom
+}
+
+func (r Regexp) Extract(node *nodedata.NodeData, agg aggregator.Aggregator) error {
+
+	var ok bool
+	var haystack string
+	if len(r.Attr) > 0 {
+		haystack = string(node.Get(r.Attr))
+	} else {
+		haystack = string(node.GetAtom(r.AtomAttr))
+	}
+
+	ok = tryRegex(r.R, haystack, agg)
+
+	if !ok {
+		return fmt.Errorf("no regexp item has been found in '%s' for '%s'", haystack, r.R)
+	}
+
+	return nil
+}
+
+func NewRegexp(config map[string]string) (Extractor, error) {
+	if config["attr"] == "" {
+		return nil, ExtractorInitError{What: "Missing attr key in config"}
+	}
+
+	if config["regexp"] == "" {
+		return nil, ExtractorInitError{What: "Missing attr regexp in config"}
+	}
+
+	if a := atom.Lookup([]byte(config["attr"])); a == 0 {
+		return Regexp{Attr: []byte(config["attr"]), R: config["regexp"]}, nil
+	} else {
+		return Regexp{AtomAttr: a, R: config["regexp"]}, nil
+	}
+}

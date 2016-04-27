@@ -4,6 +4,7 @@ package validator
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 
 	"github.com/jloup/scraper/html/nodedata"
 	"golang.org/x/net/html/atom"
@@ -112,5 +113,45 @@ func NewAttrContains(config map[string]string) (Validator, error) {
 		return AttrContains{Attr: []byte(config["attr"]), Value: []byte(config["value"])}, nil
 	} else {
 		return AttrContainsA{Attr: a, Value: []byte(config["value"])}, nil
+	}
+}
+
+// validate a specified attribute from a HTML tag with a Regexp expression
+type Regexp struct {
+	R        string
+	Attr     []byte
+	AtomAttr atom.Atom
+}
+
+func (r Regexp) Validate(node *nodedata.NodeData) bool {
+
+	var haystack []byte
+	if len(r.Attr) > 0 {
+		haystack = node.Get(r.Attr)
+	} else {
+		haystack = node.GetAtom(r.AtomAttr)
+	}
+
+	ok, err := regexp.Match(r.R, haystack)
+	if err != nil {
+		panic(err)
+	}
+
+	return ok
+}
+
+func NewRegexp(config map[string]string) (Validator, error) {
+	if config["attr"] == "" {
+		return nil, ValidatorInitError{What: "Missing attr key in config"}
+	}
+
+	if config["regexp"] == "" {
+		return nil, ValidatorInitError{What: "Missing attr regexp in config"}
+	}
+
+	if a := atom.Lookup([]byte(config["attr"])); a == 0 {
+		return Regexp{Attr: []byte(config["attr"]), R: config["regexp"]}, nil
+	} else {
+		return Regexp{AtomAttr: a, R: config["regexp"]}, nil
 	}
 }
